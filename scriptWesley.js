@@ -16,7 +16,12 @@ document.querySelector('.busca').addEventListener('submit' , async (event)=> {
                 if (retornarJson.cod === 200) {
                     removerAvisos()
                     infoClima ({
-                        Nome: retornarJson.name
+                        Nome: retornarJson.name,
+                        Pais: retornarJson.sys.country,
+                        Tempo: retornarJson.main.temp,
+                        VelocVento: retornarJson.wind.speed,
+                        IconeTempo: retornarJson.weather[0].icon,
+                        IconeVento: retornarJson.wind.deg,
                     })
 
                 } else {
@@ -46,11 +51,14 @@ function avisoCampoVazio() {
     document.querySelector('.aviso').innerHTML = 'Escreva o nome de uma cidade no campo acima.'
 }
 
-function infoClima () {
+function infoClima (retornarJson) {
     document.querySelector('.resultado').style.display = 'block'
 
-    document.querySelector('.titulo').innerHTML = `${retornarJson.Nome}`
-   
+    document.querySelector('.titulo').innerHTML = `${retornarJson.Nome}, ${retornarJson.Pais}`
+    document.querySelector('.tempInfo').innerHTML = `${retornarJson.Tempo}<sup>ºC</sup>`
+    document.querySelector('.ventoInfo').innerHTML = `${retornarJson.VelocVento}<span>km/h</span>`
+    document.querySelector('.temp img').setAttribute('src' , `http://openweathermap.org/img/wn/${retornarJson.IconeTempo}@2x.png`)
+    document.querySelector('.ventoPonto').style.transform = `rotate(${retornarJson.IconeVento}deg)`
 }
 
 function removerInfoClima() {
